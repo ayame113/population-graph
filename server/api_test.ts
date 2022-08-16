@@ -1,17 +1,26 @@
 import {
   assert,
-  assertArrayIncludes,
   assertEquals,
 } from "https://deno.land/std@0.152.0/testing/asserts.ts";
-
-import { populationApi, prefecturesApi } from "./api.ts";
+import { stub } from "https://deno.land/std@0.152.0/testing/mock.ts";
 
 Deno.test({
   name: "prefecturesApi",
   async fn() {
-    assert(prefecturesApi.pattern.test("http://foo.com/api/prefectures"));
-    const res = await (await prefecturesApi.route())!.json();
-    assertArrayIncludes(res, [{ "prefCode": 1, "prefName": "北海道" }]);
+    const fetchMockValue = "__TEST_FETCH_MOCK__";
+    const fetchSpy = stub(
+      globalThis,
+      "fetch",
+      () => Promise.resolve(Response.json({ result: fetchMockValue })),
+    );
+    try {
+      const { prefecturesApi } = await import("./api.ts");
+      assert(prefecturesApi.pattern.test("http://foo.com/api/prefectures"));
+      const res = await prefecturesApi.route();
+      assertEquals(await res!.json(), fetchMockValue);
+    } finally {
+      fetchSpy.restore();
+    }
   },
   sanitizeResources: false,
   sanitizeOps: false,
@@ -19,10 +28,33 @@ Deno.test({
 
 Deno.test({
   name: "populationApi",
-  fn() {
-    const {
-      pathname: { groups: { prefCode } },
-    } = populationApi.pattern.exec("http://foo.com/api/population/11")!;
-    assertEquals(prefCode, "11");
+  async fn() {
+    const fetchMockValue = "__TEST_FETCH_MOCK__";
+    const fetchSpy = stub(
+      globalThis,
+      "fetch",
+      () =>
+        Promise.resolve(
+          Response.json({
+            result: { data: [{ label: "総人口", data: fetchMockValue }] },
+          }),
+        ),
+    );
+    try {
+      const { populationApi } = await import("./api.ts");
+
+      assertEquals(
+        populationApi.pattern
+          .exec("http://foo.com/api/population/11")!.pathname.groups.prefCode,
+        "11",
+      );
+      const res = await populationApi.route(new URL("https://foo.com/"), {
+        // @ts-ignore: for test
+        pathname: { groups: { prefCode: "1" } },
+      });
+      assertEquals(await res!.json(), fetchMockValue);
+    } finally {
+      fetchSpy.restore();
+    }
   },
 });
