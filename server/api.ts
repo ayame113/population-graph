@@ -1,4 +1,4 @@
-import type { Population } from "../types.ts";
+import type { Population, Prefectures } from "../types.ts";
 const RESAS_API_KEY = Deno.env.get("RESAS_API_KEY")!;
 
 const PREFECTURES_URL =
@@ -8,7 +8,7 @@ const POPULATION_URL =
 
 // cache prefectures API result
 // NOTE: avoid Top-Level-Await!!!
-const prefectures = (async () => {
+const prefectures: Promise<Prefectures> = (async () => {
   const res = await fetch(PREFECTURES_URL, {
     headers: {
       "X-API-KEY": RESAS_API_KEY,
