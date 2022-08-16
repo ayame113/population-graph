@@ -1,11 +1,16 @@
 /// <reference lib="dom" />
 
-import React from "./deps.ts";
+import React, { useState } from "./deps.ts";
+import type { Population } from "../types.ts";
 
 export interface GraphProps {
-  selectedPrefectures: { data: Set<number> };
+  data: Population[];
 }
 
 export function Graph(props: GraphProps) {
-  return <div>{[...props.selectedPrefectures.data].join(", ")}</div>;
+  return (
+    <>
+      <div>{JSON.stringify(props.data)}</div>
+    </>
+  );
 }
