@@ -15,7 +15,6 @@ type PopulationRecord = Record<number, {
 const prefectures: Prefectures = await (await fetch("/api/prefectures")).json();
 
 function App() {
-  console.log("render App");
   const [populations, setPopulations] = useState<{ data: PopulationRecord }>({
     data: Object.fromEntries(
       prefectures.map(({ prefCode, prefName }) => [prefCode, {
@@ -43,6 +42,9 @@ function App() {
         }
 
         setPopulations({ data });
+      }, (err) => {
+        alert("データの読み込みに失敗しました。");
+        console.error(err);
       });
     }
 

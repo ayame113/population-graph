@@ -10,7 +10,6 @@ export interface SelectBoxProps {
 
 export const SelectBox = memo(_SelectBox);
 function _SelectBox(props: SelectBoxProps) {
-  console.log("render SelectBox", props);
   if (!props.prefectures) {
     return <div>loading...</div>;
   }

@@ -12,7 +12,6 @@ export interface GraphProps {
 }
 
 export function Graph(props: GraphProps) {
-  console.log("render Graph", props);
   const selectedData = props.data;
 
   const labelSet = new Set<string>();
