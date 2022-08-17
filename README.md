@@ -7,6 +7,22 @@ Source code for https://popl.deno.dev/.
 
 ## develop
 
+### ダウンロードとテスト実行
+
+サーバー実行には[Deno](https://deno.land)が必要です。
+
+```shell
+> git clone git@github.com:ayame113/population-graph.git
+> cd population-graph
+> deno task serve # 開発サーバー起動
+> deno task test # テスト実行
+```
+
+### 開発用コマンド
+
+CIでは`deno task check` / `deno task test:coverage` / `deno task test:fmt` /
+`deno task test:lint`が実行されます。
+
 ```shell
 # start server
 > deno task serve
