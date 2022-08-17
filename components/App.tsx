@@ -5,13 +5,19 @@ import React, { render, useCallback, useState } from "./deps.ts";
 import { SelectBox } from "./SelectBox.tsx";
 import { Graph, GraphProps } from "./Graph.tsx";
 
+/** 都道府県idがキーで、都道府県ごとの人口データが値のオブジェクト */
 type PopulationRecord = Record<number, {
+  /** ユーザーによって選択されているかどうか */
   selected: boolean;
+  /** 読み込み中かどうか */
   isLoading: boolean;
+  /** 人口データ (nullの場合はまだ読み込まれていないことを表す) */
   value: { [year: number]: number } | null;
+  /** 都道府県名 */
   prefName: string;
 }>;
 
+/** 都道府県データ */
 const prefectures: Prefectures = await (await fetch("/api/prefectures")).json();
 
 function App() {
@@ -26,16 +32,21 @@ function App() {
     ),
   });
 
+  /** 都道府県の選択を切り替えたときに呼ばれる関数 */
   const togglePrefecture = useCallback((prefCode: number) => {
     const { data } = populations;
+    // selectedの値を反転
     data[prefCode].selected = !data[prefCode].selected;
 
+    // まだデータが読み込まれていない場合、APIからデータを読み込む
     if (!data[prefCode].isLoading && !data[prefCode].value) {
       data[prefCode].isLoading = true;
       getPopulationAPI(prefCode).then((population) => {
+        // 読み込み完了後はデータをstateに格納する
         data[prefCode].value = population;
         data[prefCode].isLoading = false;
 
+        // その県が選択されている場合以外は、再レンダリングを抑制する
         const skipRender = !data[prefCode].selected;
         if (skipRender) {
           return;
@@ -48,6 +59,7 @@ function App() {
       });
     }
 
+    // 既にデータが存在する場合以外は、再レンダリングを抑制する
     const skipRender = !data[prefCode].value;
     if (skipRender) {
       return;
@@ -70,10 +82,18 @@ function App() {
   );
 }
 
+/**
+ * APIから人口データを取得します。
+ * @param prefCode 取得したい都道府県のコード
+ */
 async function getPopulationAPI(
   prefCode: number,
 ): Promise<{ [year: number]: number }> {
   const res = await fetch(`/api/population/${prefCode}`);
+  if (!res.ok) {
+    console.error("failed to fetch", res);
+    throw new Error("failed to fetch");
+  }
   const data: Population = await res.json();
   return Object.fromEntries(data.map((d) => [d.year, d.value]));
 }

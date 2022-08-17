@@ -6,7 +6,7 @@ const PREFECTURES_URL =
 const POPULATION_URL =
   "https://opendata.resas-portal.go.jp/api/v1/population/composition/perYear?cityCode=-&prefCode=";
 
-// cache prefectures API result
+// 都道府県APIのレスポンスをキャッシュする
 // NOTE: avoid Top-Level-Await!!!
 const prefectures: Promise<Prefectures> = (async () => {
   const res = await fetch(PREFECTURES_URL, {
@@ -17,9 +17,10 @@ const prefectures: Promise<Prefectures> = (async () => {
   return (await res.json()).result;
 })();
 
-// cache population API result
+// 人口APIのレスポンスをキャッシュする
 const populationCache: Record<string, Promise<Population>> = {};
 
+/** 都道府県APIの設定 */
 export const prefecturesApi = {
   pattern: new URLPattern({ pathname: "/api/prefectures" }),
   async route(): Promise<Response | undefined> {
@@ -27,6 +28,7 @@ export const prefecturesApi = {
   },
 };
 
+/** 人口APIの設定 */
 export const populationApi = {
   pattern: new URLPattern({ pathname: "/api/population/:prefCode" }),
   async route(
@@ -38,7 +40,7 @@ export const populationApi = {
   },
 };
 
-/** call population API */
+/** 人口APIを呼び出す */
 async function getPopulation(prefCode: string) {
   const res = await fetch(`${POPULATION_URL}${prefCode}`, {
     headers: {
