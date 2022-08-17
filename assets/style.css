@@ -1,3 +1,4 @@
+/* reset css */
 :root,html,body,div{
 	margin: 0;
 	padding: 0;
@@ -24,6 +25,7 @@ h2{
 	border-bottom: 1px solid lightgrey;
 }
 
+/* default page style */
 body{
 	min-height: 100vh;
 	display: flex;
@@ -52,6 +54,7 @@ footer{
 	border-bottom: 5px solid deeppink;
 }
 
+/* component styles */
 .header-link{
 	display: block;
 	color: black;
