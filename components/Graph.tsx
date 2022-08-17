@@ -53,11 +53,13 @@ export function Graph(props: GraphProps) {
 
   const data: LineProps["data"] = { labels, datasets };
   return (
-    <>
-      <div>
-        <Line options={options} data={data} height="400" />
-      </div>
-    </>
+    <div
+      title={props.data.length
+        ? "都道府県総人口グラフ"
+        : "表示するデータがありません。上の選択画面から都道府県を選択してください。"}
+    >
+      <Line options={options} data={data} height="400" />
+    </div>
   );
 }
 
