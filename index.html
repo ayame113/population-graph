@@ -5,9 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>popl</title>
     <script type="module" src="/components/App.tsx"></script>
+    <link rel="preload" as="fetch" crossorigin href="/api/prefectures">
+    <link rel="preload" as="script" crossorigin href="/components/App.tsx">
+    <link rel="preload" as="script" crossorigin href="/components/Graph.tsx">
+    <link rel="preload" as="script" crossorigin href="/components/SelectBox.tsx">
+    <link rel="preload" as="script" crossorigin href="/components/deps.ts">
     <link rel="preload" as="script" crossorigin href="https://esm.sh/v91/react@18.2.0/es2020/react.js">
     <link rel="preload" as="script" crossorigin href="https://esm.sh/v91/react-dom@18.2.0/es2020/react-dom.js">
     <link rel="preload" as="script" crossorigin href="https://esm.sh/v91/scheduler@0.23.0/es2020/scheduler.js">
+    <link rel="preload" as="script" crossorigin href="https://esm.sh/v91/react-chartjs-2@4.3.1/es2020/react-chartjs-2.js">
+    <link rel="preload" as="script" crossorigin href="https://esm.sh/v91/chart.js@3.9.1/es2020/chart.js">
     <link rel="stylesheet" href="/assets/style.css">
     <meta name="description" content="都道府県の人口グラフ。">
     <meta name="theme-color" content="#ff1493">

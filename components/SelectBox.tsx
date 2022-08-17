@@ -1,27 +1,32 @@
 /// <reference lib="dom" />
 
-import React from "./deps.ts";
+import React, { memo } from "./deps.ts";
 import type { Prefectures } from "../types.ts";
 
 export interface SelectBoxProps {
-  prefectures: Prefectures | null;
+  prefectures: Prefectures;
   togglePrefecture(prefCode: number): void;
 }
 
-export function SelectBox(props: SelectBoxProps) {
+export const SelectBox = memo(_SelectBox);
+function _SelectBox(props: SelectBoxProps) {
+  console.log("render SelectBox", props);
   if (!props.prefectures) {
     return <div>loading...</div>;
   }
   return (
-    <div>
+    <div className="select-box">
       {props.prefectures.map((prefecture) => (
-        <label>
+        <>
           <input
+            id={`select-box-${prefecture.prefCode}`}
             type="checkbox"
             onChange={() => props.togglePrefecture(prefecture.prefCode)}
           />
-          {prefecture.prefName}
-        </label>
+          <label htmlFor={`select-box-${prefecture.prefCode}`}>
+            {prefecture.prefName}
+          </label>
+        </>
       ))}
     </div>
   );

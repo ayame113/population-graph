@@ -1,87 +1,79 @@
 /// <reference lib="dom" />
 
 import type { Population, Prefectures } from "../types.ts";
-import React, { render, useEffect, useState } from "./deps.ts";
+import React, { render, useCallback, useState } from "./deps.ts";
 import { SelectBox } from "./SelectBox.tsx";
-import { Graph } from "./Graph.tsx";
+import { Graph, GraphProps } from "./Graph.tsx";
 
-// type PopulationRecord = Record<
-//   number,
-//   | { isLoading: false; data: Population }
-//   | { isLoading: true; data?: undefined }
-//   | undefined
-// >;
-type PopulationRecord = Record<
-  number,
-  | { isLoading: false; data: Population }
-  | { isLoading: true; data?: undefined }
-  | undefined
->;
+type PopulationRecord = Record<number, {
+  selected: boolean;
+  isLoading: boolean;
+  value: { [year: number]: number } | null;
+  prefName: string;
+}>;
 
-const prefecturesPromise: Promise<Prefectures> =
-  (await fetch("/api/prefectures")).json();
+const prefectures: Prefectures = await (await fetch("/api/prefectures")).json();
 
 function App() {
   console.log("render App");
-  const [prefectures, setPrefectures] = useState<Prefectures | null>(null);
-  useEffect(() => {
-    prefecturesPromise.then((data) => setPrefectures(data));
-  }, []);
-  // const [isFirst, setIsFirst] = useState(true);
-  // if (isFirst) {
-  //   setIsFirst(false);
-  //   prefecturesPromise.then((data) => setPrefectures(data));
-  // }
+  const [populations, setPopulations] = useState<{ data: PopulationRecord }>({
+    data: Object.fromEntries(
+      prefectures.map(({ prefCode, prefName }) => [prefCode, {
+        prefName,
+        selected: false,
+        isLoading: false,
+        value: null,
+      }]),
+    ),
+  });
 
-  const [populations, setPopulations] = useState<
-    { data: PopulationRecord }
-  >({ data: {} });
-
-  const [selectedPrefectures, setSelectedPrefectures] = useState(
-    { data: new Set<number>() },
-  );
-  const togglePrefecture = (prefCode: number) => {
-    const { data } = selectedPrefectures;
-    if (data.has(prefCode)) {
-      data.delete(prefCode);
-    } else {
-      data.add(prefCode);
-      loadPopulation(prefCode);
-    }
-    setSelectedPrefectures({ data });
-  };
-  const loadPopulation = (prefCode: number) => {
+  const togglePrefecture = useCallback((prefCode: number) => {
     const { data } = populations;
-    if (data[prefCode]) {
+    data[prefCode].selected = !data[prefCode].selected;
+
+    if (!data[prefCode].isLoading && !data[prefCode].value) {
+      data[prefCode].isLoading = true;
+      getPopulationAPI(prefCode).then((population) => {
+        data[prefCode].value = population;
+        data[prefCode].isLoading = false;
+
+        const skipRender = !data[prefCode].selected;
+        if (skipRender) {
+          return;
+        }
+
+        setPopulations({ data });
+      });
+    }
+
+    const skipRender = !data[prefCode].value;
+    if (skipRender) {
       return;
     }
-    data[prefCode] = { isLoading: true };
-    getPopulationAPI(prefCode).then((population) => {
-      data[prefCode] = {
-        isLoading: false,
-        data: population,
-      };
-      setPopulations({ data });
-    });
-  };
+
+    setPopulations({ data });
+  }, []);
+
   return (
-    <div>
+    <>
       <SelectBox
         prefectures={prefectures}
         togglePrefecture={togglePrefecture}
       />
       <Graph
-        data={[...selectedPrefectures.data]
-          .map((prefCode) => populations.data[prefCode]?.data)
-          .filter((v): v is Population => !!v)}
+        data={Object.values(populations.data)
+          .filter((d) => d.value && d.selected) as GraphProps["data"]}
       />
-    </div>
+    </>
   );
 }
 
-async function getPopulationAPI(prefCode: number): Promise<Population> {
+async function getPopulationAPI(
+  prefCode: number,
+): Promise<{ [year: number]: number }> {
   const res = await fetch(`/api/population/${prefCode}`);
-  return res.json();
+  const data: Population = await res.json();
+  return Object.fromEntries(data.map((d) => [d.year, d.value]));
 }
 
 render(<App />, document.querySelector("#root"));
