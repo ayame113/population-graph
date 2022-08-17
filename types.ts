@@ -6,4 +6,5 @@ export type Routing = {
     request: Request,
   ): Promise<Response | undefined>;
 };
+export type Prefectures = { prefCode: number; prefName: string }[];
 export type Population = { year: number; value: number }[];
