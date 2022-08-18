@@ -8,12 +8,14 @@ import { serveFile } from "https://deno.land/std@0.152.0/http/file_server.ts";
 import { serveDirWithTs } from "https://deno.land/x/ts_serve@v1.3.0/mod.ts";
 
 import type { Routing } from "./types.ts";
-import { populationApi, prefecturesApi } from "./server/api.ts";
+import { init, populationApi, prefecturesApi } from "./server/api.ts";
 
 const routing: Routing[] = [prefecturesApi, populationApi];
 const response404 = new Response(STATUS_TEXT[Status.NotFound], {
   status: Status.NotFound,
 });
+
+init();
 
 serve(async (request) => {
   // index.htmlのレスポンス
