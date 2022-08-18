@@ -1,6 +1,10 @@
 import ReactDOMServer from "https://esm.sh/react-dom@18.2.0/server";
 import React from "./deps.ts";
 
+import { Header } from "./Header.tsx";
+import { Main } from "./Main.tsx";
+import { Footer } from "./Footer.tsx";
+
 export function Page() {
   return (
     <html lang="ja">
@@ -84,54 +88,9 @@ export function Page() {
         <link rel="apple-touch-icon" href="https://favi.deno.dev/📈.png" />
       </head>
       <body>
-        <header>
-          <h1>
-            <a className="header-link" href="/">都道府県総人口グラフ</a>
-          </h1>
-        </header>
-        <main>
-          <div>
-            <h2>このWebサイトについて</h2>
-            <ul>
-              <li>都道府県の総人口をグラフとして表示します。</li>
-              <li>
-                データは<a
-                  target="_brank"
-                  href="https://opendata.resas-portal.go.jp/"
-                >
-                  RESAS（地域経済分析システム）
-                </a>を加工して作成しています。
-              </li>
-              <li>
-                このWebサイトは<a
-                  target="_brank"
-                  href="https://notion.yumemi.co.jp/0e9ef27b55704d7882aab55cc86c999d"
-                >
-                  株式会社ゆめみのフロントエンドコーディング試験
-                </a>の課題を実装したものです。
-              </li>
-            </ul>
-          </div>
-          <div>
-            <h2>使い方</h2>
-            <ol>
-              <li>都道府県を選択してください。</li>
-              <li>選択した都道府県の総人口グラフが表示されます。</li>
-            </ol>
-          </div>
-          <div id="root">Loading...</div>
-        </main>
-        <footer>
-          Copyright © 2022{" "}
-          <a href="https://github.com/ayame113" target="_brank">ayame113</a>. |
-          {" "}
-          <a
-            href="https://github.com/ayame113/population-graph"
-            target="_brank"
-          >
-            source
-          </a>
-        </footer>
+        <Header />
+        <Main />
+        <Footer />
       </body>
     </html>
   );
