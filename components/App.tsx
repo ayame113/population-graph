@@ -46,7 +46,7 @@ function App() {
         data[prefCode].value = population;
         data[prefCode].isLoading = false;
 
-        // その県が選択されている場合以外は、再レンダリングを抑制する
+        // データを読み込んだ県が選択されていなければ、再レンダリングを抑制する
         const skipRender = !data[prefCode].selected;
         if (skipRender) {
           return;
@@ -59,7 +59,7 @@ function App() {
       });
     }
 
-    // 既にデータが存在する場合以外は、再レンダリングを抑制する
+    // 表示するデータがまだ存在しなければ、再レンダリングを抑制する
     const skipRender = !data[prefCode].value;
     if (skipRender) {
       return;
