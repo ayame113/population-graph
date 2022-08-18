@@ -75,6 +75,7 @@ function getPopulation(prefCode: string): Promise<Population> {
 }
 
 /** 初回実行時に強制的にAPIを呼び出し、キャッシュする */
-export function init() {
-  getPrefectures().catch(console.error);
+export async function init() {
+  prefecturesCache = undefined;
+  await getPrefectures().catch(console.error);
 }

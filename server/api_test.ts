@@ -4,11 +4,12 @@ import {
   assertRejects,
 } from "https://deno.land/std@0.152.0/testing/asserts.ts";
 import {
+  assertSpyCallArg,
   assertSpyCalls,
   stub,
 } from "https://deno.land/std@0.152.0/testing/mock.ts";
 
-import { populationApi, prefecturesApi } from "./api.ts";
+import { init, populationApi, prefecturesApi } from "./api.ts";
 
 Deno.test(async function prefecturesApiTest(t) {
   await t.step("pattern", () => {
@@ -26,6 +27,13 @@ Deno.test(async function prefecturesApiTest(t) {
       await assertRejects(async () => {
         await prefecturesApi.route();
       }, "failed to fetch API");
+
+      assertSpyCallArg(
+        fetchSpy,
+        0,
+        0,
+        "https://opendata.resas-portal.go.jp/api/v1/prefectures",
+      );
 
       assertSpyCalls(fetchSpy, 1);
     } finally {
@@ -46,6 +54,37 @@ Deno.test(async function prefecturesApiTest(t) {
       const res2 = await prefecturesApi.route();
       assertEquals(await res1!.json(), fetchMockValue);
       assertEquals(await res2!.json(), fetchMockValue);
+
+      assertSpyCallArg(
+        fetchSpy,
+        0,
+        0,
+        "https://opendata.resas-portal.go.jp/api/v1/prefectures",
+      );
+
+      // routeを複数回呼び出しても、結果がキャッシュされているのでfetchの呼び出し回数は1回
+      assertSpyCalls(fetchSpy, 1);
+    } finally {
+      fetchSpy.restore();
+    }
+  });
+
+  await t.step("init", async () => {
+    const fetchMockValue = "__TEST_FETCH_MOCK__";
+    const fetchSpy = stub(
+      globalThis,
+      "fetch",
+      () => Promise.resolve(Response.json({ result: fetchMockValue })),
+    );
+    try {
+      await init();
+
+      assertSpyCallArg(
+        fetchSpy,
+        0,
+        0,
+        "https://opendata.resas-portal.go.jp/api/v1/prefectures",
+      );
 
       // routeを複数回呼び出しても、結果がキャッシュされているのでfetchの呼び出し回数は1回
       assertSpyCalls(fetchSpy, 1);
@@ -77,11 +116,21 @@ Deno.test(async function populationApiTest(t) {
           pathname: { groups: { prefCode: "1" } },
         });
       });
+
+      assertSpyCallArg(
+        fetchSpy,
+        0,
+        0,
+        "https://opendata.resas-portal.go.jp/api/v1/population/composition/perYear?cityCode=-&prefCode=1",
+      );
+
+      assertSpyCalls(fetchSpy, 1);
     } finally {
       fetchSpy.restore();
     }
   });
 
+  // エラーのレスポンスがキャッシュされていないことを確認します。
   await t.step("response error", async () => {
     const fetchMockValue = "__TEST_FETCH_MOCK__";
     const fetchSpy = stub(
@@ -105,6 +154,14 @@ Deno.test(async function populationApiTest(t) {
       });
       assertEquals(await res1!.json(), fetchMockValue);
       assertEquals(await res2!.json(), fetchMockValue);
+
+      assertSpyCallArg(
+        fetchSpy,
+        0,
+        0,
+        "https://opendata.resas-portal.go.jp/api/v1/population/composition/perYear?cityCode=-&prefCode=1",
+      );
+
       // routeを複数回呼び出しても、結果がキャッシュされているのでfetchの呼び出し回数は1回
       assertSpyCalls(fetchSpy, 1);
     } finally {
