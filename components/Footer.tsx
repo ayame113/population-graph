@@ -1,5 +1,6 @@
 import React from "./deps.ts";
 
+/** フッターコンポーネント */
 export function Footer() {
   return (
     <footer>

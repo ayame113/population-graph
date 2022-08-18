@@ -20,7 +20,7 @@ type PopulationRecord = Record<number, {
 /** 都道府県データ */
 const prefectures: Prefectures = await (await fetch("/api/prefectures")).json();
 
-function App() {
+function PopulationGraph() {
   const [populations, setPopulations] = useState<{ data: PopulationRecord }>({
     data: Object.fromEntries(
       prefectures.map(({ prefCode, prefName }) => [prefCode, {
@@ -98,4 +98,4 @@ async function getPopulationAPI(
   return Object.fromEntries(data.map((d) => [d.year, d.value]));
 }
 
-render(<App />, document.querySelector("#root"));
+render(<PopulationGraph />, document.querySelector("#root"));

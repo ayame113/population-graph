@@ -1,5 +1,6 @@
 import React from "./deps.ts";
 
+/** 使い方表示コンポーネント */
 export function Usage() {
   return (
     <section>

@@ -1,5 +1,6 @@
 import React from "./deps.ts";
 
+/** Aboutコンポーネント */
 export function About() {
   return (
     <section>

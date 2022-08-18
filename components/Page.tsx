@@ -5,6 +5,7 @@ import { Header } from "./Header.tsx";
 import { Main } from "./Main.tsx";
 import { Footer } from "./Footer.tsx";
 
+/** トップページ */
 export function Page() {
   return (
     <html lang="ja">
@@ -12,7 +13,7 @@ export function Page() {
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>都道府県総人口グラフ</title>
-        <script type="module" src="/components/App.tsx"></script>
+        <script type="module" src="/components/PopulationGraph.tsx"></script>
         <link
           rel="preload"
           as="fetch"
@@ -23,7 +24,7 @@ export function Page() {
           rel="preload"
           as="script"
           crossOrigin=""
-          href="/components/App.tsx"
+          href="/components/PopulationGraph.tsx"
         />
         <link
           rel="preload"

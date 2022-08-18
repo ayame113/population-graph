@@ -1,5 +1,6 @@
 import React from "./deps.ts";
 
+/** ヘッダーコンポーネント */
 export function Header() {
   return (
     <header>

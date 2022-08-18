@@ -10,6 +10,7 @@ export interface SelectBoxProps {
   togglePrefecture(prefCode: number): void;
 }
 
+/** 県選択ボックスコンポーネント */
 export const SelectBox = memo((props: SelectBoxProps) => (
   <div className="select-box">
     {props.prefectures.map((prefecture) => (
