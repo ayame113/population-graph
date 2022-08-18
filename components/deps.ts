@@ -24,6 +24,7 @@ import {
   Tooltip,
 } from "https://esm.sh/v91/chart.js@3.9.1/es2020/chart.js";
 
+// ChartJSを初期化
 ChartJS.register(
   CategoryScale,
   LinearScale,

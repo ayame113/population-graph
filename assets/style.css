@@ -33,6 +33,7 @@ body{
 }
 header{
 	border-top: 5px solid deeppink;
+	text-align: center;
 }
 main{
 	flex-grow: 1;

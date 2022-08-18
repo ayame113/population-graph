@@ -16,10 +16,13 @@ const response404 = new Response(STATUS_TEXT[Status.NotFound], {
 });
 
 serve(async (request) => {
+  // index.htmlのレスポンス
   const url = new URL(request.url);
   if (url.pathname === "/") {
     return serveFile(request, "./index.html");
   }
+
+  // APIへのリクエストを受信
   for (const { pattern, route } of routing) {
     const match = pattern.exec(url);
     if (match) {
@@ -27,5 +30,7 @@ serve(async (request) => {
         response404.clone();
     }
   }
+
+  // 静的ファイルを配信
   return serveDirWithTs(request);
 });
