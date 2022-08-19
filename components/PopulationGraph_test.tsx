@@ -4,8 +4,7 @@ import { delay } from "https://deno.land/std@0.152.0/async/delay.ts";
 import { DOMParser } from "https://deno.land/x/deno_dom@v0.1.33-alpha/deno-dom-wasm.ts";
 import { act } from "https://esm.sh/react-dom@18.2.0/test-utils?target=es2020&dev";
 
-import React, { createRoot } from "./deps.ts";
-import { Graph, GraphProps } from "./Graph.tsx";
+import React, { createRoot, Line } from "./deps.ts";
 import { SelectBox, SelectBoxProps } from "./SelectBox.tsx";
 
 export const fetchStub = stub(
@@ -32,11 +31,7 @@ Deno.test(async function renderPopulationGraph() {
     React,
     "createElement",
     (type, ...args) => {
-      // @ts-expect-error: for test
-      if (type === SelectBox) {
-        return originalReactCreateElement("div");
-      }
-      if (type === Graph) {
+      if (type === Line) {
         return originalReactCreateElement("div");
       }
       return originalReactCreateElement(type, ...args);
@@ -54,8 +49,8 @@ Deno.test(async function renderPopulationGraph() {
 
     const calls = createElementStub.calls as unknown as {
       1: { args: [typeof SelectBox, SelectBoxProps] };
-      2: { args: [typeof Graph, GraphProps] };
-      5: { args: [typeof Graph, GraphProps] };
+      8: { args: [typeof Line, unknown] };
+      13: { args: [typeof Line, unknown] };
     };
 
     // 初期表示の際にレンダリングされるデータを確認
@@ -65,12 +60,32 @@ Deno.test(async function renderPopulationGraph() {
       assertEquals(args[1].prefectures[0].prefCode, 100);
       assertEquals(args[1].prefectures[0].prefName, "○○県");
       assertEquals(typeof args[1].togglePrefecture, "function");
+      assertEquals(
+        document.querySelector("#root")!.innerHTML,
+        `<div class="select-box"><input id="select-box-100" type="checkbox"><label for="select-box-100">○○県</label></div><div title="表示するデータがありません。上の選択画面から都道府県を選択してください。"><div></div></div>`,
+      );
     }
     // 初期表示の際にレンダリングされるデータを確認
     {
-      const { args } = calls[2];
-      assertEquals(args[0], Graph);
-      assertEquals(args[1], { data: [] });
+      const { args } = calls[8];
+      assertEquals(args[0], Line);
+      assertEquals(args[1], {
+        data: { datasets: [], labels: [] },
+        height: "400",
+        options: {
+          maintainAspectRatio: false,
+          plugins: {
+            title: { display: true, text: "都道府県別の人口" },
+          },
+          scales: {
+            xAxes: { title: { display: true, text: "year" } },
+            yAxes: {
+              beginAtZero: true,
+              title: { display: true, text: "population" },
+            },
+          },
+        },
+      });
     }
 
     // チェックボックスをチェックした時に正しくデータが読み込まれ、表示が切り替わるか確認
@@ -79,15 +94,32 @@ Deno.test(async function renderPopulationGraph() {
     });
     await delay(1000);
     {
-      const { args } = calls[5];
-      assertEquals(args[0], Graph);
+      const { args } = calls[13];
+      assertEquals(args[0], Line);
       assertEquals<unknown>(args[1], {
-        data: [{
-          isLoading: false,
-          prefName: "○○県",
-          selected: true,
-          value: { "1000": 20 },
-        }],
+        data: {
+          datasets: [
+            {
+              backgroundColor: "hsl(42, 120%, 40%)",
+              borderColor: "hsl(42, 120%, 40%)",
+              data: [20],
+              label: "○○県",
+            },
+          ],
+          labels: ["1000"],
+        },
+        height: "400",
+        options: {
+          maintainAspectRatio: false,
+          plugins: { title: { display: true, text: "都道府県別の人口" } },
+          scales: {
+            xAxes: { title: { display: true, text: "year" } },
+            yAxes: {
+              beginAtZero: true,
+              title: { display: true, text: "population" },
+            },
+          },
+        },
       });
     }
   } finally {
