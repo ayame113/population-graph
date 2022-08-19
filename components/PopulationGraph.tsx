@@ -1,7 +1,7 @@
 /// <reference lib="dom" />
 
 import type { Population, Prefectures } from "../types.ts";
-import React, { createRoot, useCallback, useState } from "./deps.ts";
+import React, { useCallback, useState } from "./deps.ts";
 import { SelectBox } from "./SelectBox.tsx";
 import { Graph, GraphProps } from "./Graph.tsx";
 

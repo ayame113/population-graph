@@ -6,7 +6,8 @@ export {
   useState,
 } from "https://esm.sh/v91/react@18.2.0/es2020/react.js";
 
-// @deno-types="https://esm.sh/v91/@types/react-dom@18.0.6/client~.d.ts"
+// esm.sh bug, type import fail
+// // @deno-types="https://esm.sh/v91/@types/react-dom@18.0.6/client~.d.ts"
 export { createRoot } from "https://esm.sh/v91/react-dom@18.2.0/es2020/client.js";
 
 // @deno-types="https://esm.sh/v91/react-chartjs-2@4.3.1/dist/index.d.ts"
