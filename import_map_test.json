@@ -1,0 +1,8 @@
+{
+  "imports": {
+    "https://esm.sh/v91/react@18.2.0/es2020/react.js": "https://esm.sh/v91/react@18.2.0/es2020/react.development.js",
+    "https://esm.sh/v91/react-dom@18.2.0/es2020/client.js": "https://esm.sh/v91/react-dom@18.2.0/es2020/client.development.js",
+    "https://esm.sh/v91/react-chartjs-2@4.3.1/es2020/react-chartjs-2.js": "https://esm.sh/v91/react-chartjs-2@4.3.1/es2020/react-chartjs-2.development.js",
+    "https://esm.sh/v91/chart.js@3.9.1/es2020/chart.js": "https://esm.sh/v91/chart.js@3.9.1/es2020/chart.development.js"
+  }
+}

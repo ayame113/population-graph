@@ -2,7 +2,7 @@
   "tasks": {
     "serve": "deno run --watch=./ --allow-env --allow-read=. --allow-net ./serve.ts",
     "check": "deno check ./serve.ts",
-    "test": "deno test --allow-env --allow-net --allow-read=.",
+    "test": "deno test --no-check --import-map=./import_map_test.json --allow-env --allow-net --allow-read=.",
     "test:coverage": "deno task test --coverage=./coverage",
     "test:fmt": "deno fmt --check",
     "test:lint": "deno lint"

@@ -112,7 +112,7 @@ Deno.test(async function populationApiTest(t) {
     try {
       await assertRejects(async () => {
         await populationApi.route(new URL("https://foo.com/"), {
-          // @ts-ignore: for test
+          // @ts-expect-error: for test
           pathname: { groups: { prefCode: "1" } },
         });
       });
@@ -145,11 +145,11 @@ Deno.test(async function populationApiTest(t) {
     );
     try {
       const res1 = await populationApi.route(new URL("https://foo.com/"), {
-        // @ts-ignore: for test
+        // @ts-expect-error: for test
         pathname: { groups: { prefCode: "1" } },
       });
       const res2 = await populationApi.route(new URL("https://foo.com/"), {
-        // @ts-ignore: for test
+        // @ts-expect-error: for test
         pathname: { groups: { prefCode: "1" } },
       });
       assertEquals(await res1!.json(), fetchMockValue);

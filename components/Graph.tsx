@@ -12,6 +12,7 @@ export interface GraphProps {
   }[];
 }
 
+/** グラフ表示コンポーネント */
 export function Graph(props: GraphProps) {
   /** x軸のラベル（year） */
   const labelSet = new Set<string>();
