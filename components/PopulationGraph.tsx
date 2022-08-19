@@ -1,7 +1,7 @@
 /// <reference lib="dom" />
 
 import type { Population, Prefectures } from "../types.ts";
-import React, { render, useCallback, useState } from "./deps.ts";
+import React, { createRoot, useCallback, useState } from "./deps.ts";
 import { SelectBox } from "./SelectBox.tsx";
 import { Graph, GraphProps } from "./Graph.tsx";
 
@@ -19,8 +19,8 @@ type PopulationRecord = Record<number, {
 
 /** 都道府県データ */
 const prefectures: Prefectures = await (await fetch("/api/prefectures")).json();
-
-function PopulationGraph() {
+console.log({ prefectures });
+export function PopulationGraph() {
   const [populations, setPopulations] = useState<{ data: PopulationRecord }>({
     data: Object.fromEntries(
       prefectures.map(({ prefCode, prefName }) => [prefCode, {
@@ -97,5 +97,3 @@ async function getPopulationAPI(
   const data: Population = await res.json();
   return Object.fromEntries(data.map((d) => [d.year, d.value]));
 }
-
-render(<PopulationGraph />, document.querySelector("#root"));

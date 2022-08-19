@@ -5,8 +5,11 @@ import { Header } from "./Header.tsx";
 import { Main } from "./Main.tsx";
 import { Footer } from "./Footer.tsx";
 
+// const DEPLOYMENT_ID = Deno.env.get("DENO_DEPLOYMENT_ID");
+
 const preload = [
   { as: "fetch", href: "/api/prefectures" },
+  { as: "script", href: "/components/main.ts" },
   { as: "script", href: "/components/PopulationGraph.tsx" },
   { as: "script", href: "/components/Graph.tsx" },
   { as: "script", href: "/components/SelectBox.tsx" },
@@ -25,7 +28,12 @@ const preload = [
     href: "https://esm.sh/v91/react-chartjs-2@4.3.1/es2020/react-chartjs-2.js",
   },
   { as: "script", href: "https://esm.sh/v91/chart.js@3.9.1/es2020/chart.js" },
+  {
+    as: "script",
+    href: "https://esm.sh/v91/react-dom@18.2.0/es2020/client.js",
+  },
 ];
+
 const TITLE = "都道府県総人口グラフ";
 const DESCRIPTION = "都道府県の人口グラフ。";
 const TOP_PAGE = "https://popl.deno.dev";
@@ -40,7 +48,7 @@ export function Page() {
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>{TITLE}</title>
-        <script type="module" src="/components/PopulationGraph.tsx"></script>
+        <script type="module" src="/components/main.ts"></script>
         {preload.map(({ as, href }) => (
           <link
             rel="preload"
