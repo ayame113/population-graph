@@ -21,7 +21,7 @@ type PopulationRecord = Record<number, {
 
 /** 都道府県データ */
 const prefectures: Prefectures = await (await fetch("/api/prefectures")).json();
-console.log({ prefectures });
+
 export function PopulationGraph() {
   const [populations, setPopulations] = useState<{ data: PopulationRecord }>({
     data: Object.fromEntries(
