@@ -1,5 +1,7 @@
 /// <reference lib="dom" />
 
+/** @jsxFrag React.Fragment */
+/** @jsx React.createElement */
 import React, { memo } from "./deps.ts";
 import type { Prefectures } from "../types.ts";
 
