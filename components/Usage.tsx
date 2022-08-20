@@ -1,6 +1,6 @@
 /** @jsxFrag React.Fragment */
 /** @jsx React.createElement */
-import React from "./deps.ts";
+import React from "./server_deps.ts";
 
 /** 使い方表示コンポーネント */
 export function Usage() {

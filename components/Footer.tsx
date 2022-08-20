@@ -1,6 +1,6 @@
 /** @jsxFrag React.Fragment */
 /** @jsx React.createElement */
-import React from "./deps.ts";
+import React from "./server_deps.ts";
 
 /** フッターコンポーネント */
 export function Footer() {
