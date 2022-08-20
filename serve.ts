@@ -30,6 +30,10 @@ serve(async (request) => {
     });
   }
 
+  if (url.pathname === "/twitter_card.png") {
+    return await fetch("https://favi.deno.dev/📈.png");
+  }
+
   // APIへのリクエストを受信
   for (const { pattern, route } of routing) {
     const match = pattern.exec(url);

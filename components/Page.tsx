@@ -65,7 +65,10 @@ export function Page() {
         <meta property="og:title" content={TITLE} />
         <meta property="og:description" content={DESCRIPTION} />
         <meta property="og:url" content={TOP_PAGE} />
-        <meta property="og:image" content={FAVICON} />
+        <meta
+          property="og:image"
+          content="https://popl.deno.dev/twitter_card.png"
+        />
         <meta property="og:type" content="website" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:site" content="@_ayame113_" />
