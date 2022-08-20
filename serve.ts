@@ -55,6 +55,8 @@ serve(async (request) => {
     return cache[request.url]!.clone();
   }
   const response = await serveDirWithTs(request);
-  cache[request.url] = response.clone();
+  if (response.ok) {
+    cache[request.url] = response.clone();
+  }
   return response;
 });
