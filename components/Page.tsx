@@ -7,8 +7,6 @@ import { Header } from "./Header.tsx";
 import { Main } from "./Main.tsx";
 import { Footer } from "./Footer.tsx";
 
-// const DEPLOYMENT_ID = Deno.env.get("DENO_DEPLOYMENT_ID");
-
 const preload = [
   { as: "fetch", href: "/api/prefectures" },
   { as: "script", href: "/components/main.ts" },
