@@ -1,13 +1,11 @@
 import ReactDOMServer from "https://esm.sh/react-dom@18.2.0/server";
 /** @jsxFrag React.Fragment */
 /** @jsx React.createElement */
-import React from "./deps.ts";
+import React from "./server_deps.ts";
 
 import { Header } from "./Header.tsx";
 import { Main } from "./Main.tsx";
 import { Footer } from "./Footer.tsx";
-
-// const DEPLOYMENT_ID = Deno.env.get("DENO_DEPLOYMENT_ID");
 
 const preload = [
   { as: "fetch", href: "/api/prefectures" },
