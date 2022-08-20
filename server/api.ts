@@ -1,4 +1,4 @@
-import type { Population, Prefectures } from "../types.ts";
+import type { Population, Prefectures } from "./types.ts";
 const RESAS_API_KEY = Deno.env.get("RESAS_API_KEY")!;
 
 const PREFECTURES_URL =

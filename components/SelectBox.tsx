@@ -1,7 +1,9 @@
 /// <reference lib="dom" />
 
+/** @jsxFrag React.Fragment */
+/** @jsx React.createElement */
 import React, { memo } from "./deps.ts";
-import type { Prefectures } from "../types.ts";
+import type { Prefectures } from "../server/types.ts";
 
 export interface SelectBoxProps {
   /** 都道府県データ */

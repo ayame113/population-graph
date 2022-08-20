@@ -1,5 +1,7 @@
 /// <reference lib="dom" />
 
+/** @jsxFrag React.Fragment */
+/** @jsx React.createElement */
 import React, { Line } from "./deps.ts";
 
 type LineProps = Parameters<typeof Line>[0];

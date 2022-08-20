@@ -1,3 +1,5 @@
+/** @jsxFrag React.Fragment */
+/** @jsx React.createElement */
 import React from "./deps.ts";
 
 import { About } from "./About.tsx";
