@@ -5,7 +5,7 @@
 import React, { useCallback, useState } from "./deps.ts";
 import { SelectBox } from "./SelectBox.tsx";
 import { Graph, GraphProps } from "./Graph.tsx";
-import type { Population, Prefectures } from "../types.ts";
+import type { Population, Prefectures } from "../server/types.ts";
 
 /** 都道府県idがキーで、都道府県ごとの人口データが値のオブジェクト */
 type PopulationRecord = Record<number, {
