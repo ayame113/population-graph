@@ -34,11 +34,17 @@ const preload = [
   },
 ];
 
+const DEPLOYMENT_ID = Deno.env.get("DENO_DEPLOYMENT_ID") ?? crypto.randomUUID();
 const TITLE = "都道府県総人口グラフ";
 const DESCRIPTION = "都道府県の人口グラフ。";
 const TOP_PAGE = "https://popl.deno.dev";
 // Copyright 2018 Twitter, Inc and other contributors. Graphics licensed under CC-BY 4.0: https://creativecommons.org/licenses/by/4.0/
 const FAVICON = "https://favi.deno.dev/📈.png";
+
+const serviceWorkerScript = `
+if ("serviceWorker" in navigator)
+  navigator.serviceWorker.register("/service_worker.js?__h=${DEPLOYMENT_ID}", { scope: "/" });
+`;
 
 /** トップページ */
 export function Page() {
@@ -72,6 +78,10 @@ export function Page() {
         <meta name="twitter:site" content="@_ayame113_" />
         <link rel="icon" type="image/png" href={FAVICON} />
         <link rel="apple-touch-icon" href={FAVICON} />
+        <script
+          type="module"
+          dangerouslySetInnerHTML={{ __html: serviceWorkerScript }}
+        />
       </head>
       <body>
         <Header />
