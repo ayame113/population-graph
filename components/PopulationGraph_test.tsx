@@ -44,6 +44,15 @@ Deno.test(async function renderPopulationGraph() {
     "fetch",
     () => Promise.resolve(Response.json([{ year: 1000, value: 20 }])),
   );
+  const matchMediaStub = stub(
+    globalThis,
+    "matchMedia",
+    () => {
+      const m = new EventTarget() as MediaQueryList;
+      // m.matches = false;
+      return m;
+    },
+  );
   try {
     act(() => {
       createRoot(document.querySelector("#root")!).render(<PopulationGraph />);
@@ -139,5 +148,6 @@ Deno.test(async function renderPopulationGraph() {
   } finally {
     createElementStub.restore();
     fetchStub.restore();
+    matchMediaStub.restore();
   }
 });
