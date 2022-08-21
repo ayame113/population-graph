@@ -17,11 +17,28 @@ export interface GraphProps {
 /** グラフ表示コンポーネント */
 export function Graph(props: GraphProps) {
   // ダークモード対応
+  const isDarkMode = useDarkMode();
+
+  const { data, options } = generateGraphDataset(props.data, isDarkMode);
+  return (
+    <div
+      title={props.data.length
+        ? "都道府県総人口グラフ"
+        : "表示するデータがありません。上の選択画面から都道府県を選択してください。"}
+    >
+      <Line options={options} data={data} height="400" />
+    </div>
+  );
+}
+
+/** ダークモード切り替えのためのstateを生成するカスタムフック */
+function useDarkMode() {
   const [isDarkMode, setIsDarkMode] = useState(
     globalThis.matchMedia("(prefers-color-scheme: dark)").matches,
   );
   useEffect(() => {
     const mediaQuery = globalThis.matchMedia("(prefers-color-scheme: dark)");
+    // ダークモード / ライトモードの変更を監視する
     const onModeCange = (event: MediaQueryListEvent) =>
       setIsDarkMode(event.matches);
     mediaQuery.addEventListener("change", onModeCange);
@@ -29,10 +46,14 @@ export function Graph(props: GraphProps) {
       mediaQuery.removeEventListener("change", onModeCange);
     };
   });
+  return isDarkMode;
+}
 
+/** chartライブラリに渡す形式のデータを生成する */
+function generateGraphDataset(data: GraphProps["data"], isDarkMode: boolean) {
   /** x軸のラベル（year） */
   const labelSet = new Set<string>();
-  for (const { value } of props.data) {
+  for (const { value } of data) {
     for (const year of Object.keys(value)) {
       labelSet.add(`${year}`);
     }
@@ -40,7 +61,7 @@ export function Graph(props: GraphProps) {
   const labels = [...labelSet].sort();
 
   /** グラフに表示するデータ */
-  const datasets = props.data.map(({ prefName, value }) => {
+  const datasets = data.map(({ prefName, value }) => {
     return {
       label: prefName,
       data: labels.map((year) => value[+year]),
@@ -72,17 +93,7 @@ export function Graph(props: GraphProps) {
       },
     },
   };
-
-  const data: LineProps["data"] = { labels, datasets };
-  return (
-    <div
-      title={props.data.length
-        ? "都道府県総人口グラフ"
-        : "表示するデータがありません。上の選択画面から都道府県を選択してください。"}
-    >
-      <Line options={options} data={data} height="400" />
-    </div>
-  );
+  return { options, data: { labels, datasets } };
 }
 
 const colorCache: Record<string, number> = {};
