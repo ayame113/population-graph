@@ -18,16 +18,12 @@ export interface GraphProps {
 export function Graph(props: GraphProps) {
   // ダークモード対応
   const [isDarkMode, setIsDarkMode] = useState(
-    globalThis.matchMedia?.("(prefers-color-scheme: dark)").matches,
+    globalThis.matchMedia.("(prefers-color-scheme: dark)").matches,
   );
   useEffect(() => {
-    if (!globalThis.matchMedia) {
-      return;
-    }
     const mediaQuery = globalThis.matchMedia("(prefers-color-scheme: dark)");
-    const onModeCange = (event: MediaQueryListEvent) => {
-      setIsDarkMode(event.matches);
-    };
+    const onModeCange = (event: MediaQueryListEvent) =>
+      setIsDarkMode(event.matches)
     mediaQuery.addEventListener("change", onModeCange);
     return () => {
       mediaQuery.removeEventListener("change", onModeCange);
