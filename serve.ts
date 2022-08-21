@@ -28,7 +28,7 @@ init();
 
 const cache: Record<string, Response | undefined> = {};
 
-serve(async (request) => {
+export const handler = async (request: Request) => {
   // index.htmlのレスポンス
   const url = new URL(request.url);
   if (url.pathname === "/") {
@@ -60,4 +60,8 @@ serve(async (request) => {
     cache[request.url] = response.clone();
   }
   return response;
-});
+};
+
+if (import.meta.main) {
+  serve(handler);
+}
