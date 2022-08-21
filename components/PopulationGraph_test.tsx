@@ -75,15 +75,20 @@ Deno.test(async function renderPopulationGraph() {
         data: { datasets: [], labels: [] },
         height: "400",
         options: {
+          color: "black",
           maintainAspectRatio: false,
           plugins: {
-            title: { display: true, text: "都道府県別の人口" },
+            title: { color: "black", display: true, text: "都道府県別の人口" },
           },
           scales: {
-            xAxes: { title: { display: true, text: "year" } },
+            xAxes: {
+              ticks: { color: "black" },
+              title: { color: "black", display: true, text: "year" },
+            },
             yAxes: {
               beginAtZero: true,
-              title: { display: true, text: "population" },
+              ticks: { color: "black" },
+              title: { color: "black", display: true, text: "population" },
             },
           },
         },
@@ -112,13 +117,20 @@ Deno.test(async function renderPopulationGraph() {
         },
         height: "400",
         options: {
+          color: "black",
           maintainAspectRatio: false,
-          plugins: { title: { display: true, text: "都道府県別の人口" } },
+          plugins: {
+            title: { color: "black", display: true, text: "都道府県別の人口" },
+          },
           scales: {
-            xAxes: { title: { display: true, text: "year" } },
+            xAxes: {
+              ticks: { color: "black" },
+              title: { color: "black", display: true, text: "year" },
+            },
             yAxes: {
               beginAtZero: true,
-              title: { display: true, text: "population" },
+              ticks: { color: "black" },
+              title: { color: "black", display: true, text: "population" },
             },
           },
         },
