@@ -72,11 +72,17 @@ sw.addEventListener("fetch", (e) => {
  * @param  {Response} response
  */
 function shouldCache(response) {
+  // 正常レスポンス以外はキャッシュしない
   if (!response.ok) {
     return false;
   }
+  // 除外リストにあればキャッシュしない
   if (EXCLUDE_CACHE.has(new URL(response.url).pathname)) {
     return false;
+  }
+  // 外部サイトへのリクエストであればキャッシュしない
+  if (!response.url.startsWith(location.origin)) {
+    false;
   }
   return true;
 }
