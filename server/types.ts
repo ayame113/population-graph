@@ -13,7 +13,7 @@ export type Routing = {
     url: URL,
     pattern: URLPatternResult,
     request: Request,
-  ): Promise<Response | undefined>;
+  ): Promise<Response | undefined> | Response | undefined;
 };
 export type Prefectures = { prefCode: number; prefName: string }[];
 export type Population = { year: number; value: number }[];

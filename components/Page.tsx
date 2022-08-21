@@ -2,6 +2,14 @@ import ReactDOMServer from "https://esm.sh/react-dom@18.2.0/server";
 /** @jsxFrag React.Fragment */
 /** @jsx React.createElement */
 import React from "./server_deps.ts";
+import {
+  DEPLOYMENT_ID,
+  DESCRIPTION,
+  FAVICON_URL,
+  THEME_COLOR,
+  TITLE,
+  TOP_PAGE,
+} from "../metadata.ts";
 
 import { Header } from "./Header.tsx";
 import { Main } from "./Main.tsx";
@@ -34,13 +42,6 @@ const preload = [
   },
 ];
 
-const DEPLOYMENT_ID = Deno.env.get("DENO_DEPLOYMENT_ID") ?? crypto.randomUUID();
-const TITLE = "都道府県総人口グラフ";
-const DESCRIPTION = "都道府県の人口グラフ。";
-const TOP_PAGE = "https://popl.deno.dev";
-// Copyright 2018 Twitter, Inc and other contributors. Graphics licensed under CC-BY 4.0: https://creativecommons.org/licenses/by/4.0/
-const FAVICON = "https://favi.deno.dev/📈.png";
-
 const serviceWorkerScript = `
 if ("serviceWorker" in navigator)
   navigator.serviceWorker.register("/service_worker.js?__h=${DEPLOYMENT_ID}", { scope: "/" });
@@ -65,7 +66,7 @@ export function Page() {
         ))}
         <link rel="stylesheet preload" as="style" href="/assets/style.css" />
         <meta name="description" content={DESCRIPTION} />
-        <meta name="theme-color" content="#f32091" />
+        <meta name="theme-color" content={THEME_COLOR} />
         <meta property="og:title" content={TITLE} />
         <meta property="og:description" content={DESCRIPTION} />
         <meta property="og:url" content={TOP_PAGE} />
@@ -76,8 +77,8 @@ export function Page() {
         <meta property="og:type" content="website" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:site" content="@_ayame113_" />
-        <link rel="icon" type="image/png" href={FAVICON} />
-        <link rel="apple-touch-icon" href={FAVICON} />
+        <link rel="icon" type="image/png" href={FAVICON_URL} />
+        <link rel="apple-touch-icon" href={FAVICON_URL} />
         <script
           type="module"
           dangerouslySetInnerHTML={{ __html: serviceWorkerScript }}
