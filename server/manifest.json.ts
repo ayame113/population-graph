@@ -17,7 +17,7 @@ export const manifestJson = {
       }],
       start_url: "/",
       theme_color: THEME_COLOR,
-      background_color: THEME_COLOR,
+      background_color: "#fdf5e6",
     }, {
       headers: {
         "cache-control": "public, max-age=31536000",
