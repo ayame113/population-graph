@@ -12,10 +12,11 @@ import {
 
 import type { Routing } from "./server/types.ts";
 import { init, populationApi, prefecturesApi } from "./server/api.ts";
+import { manifestJson } from "./server/manifest.json.ts";
 import { renderToString } from "./components/Page.tsx";
 
 fourceInstantiateWasm();
-const routing: Routing[] = [prefecturesApi, populationApi];
+const routing: Routing[] = [prefecturesApi, populationApi, manifestJson];
 const response404 = new Response(STATUS_TEXT[Status.NotFound], {
   status: Status.NotFound,
 });
@@ -27,7 +28,7 @@ init();
 
 const cache: Record<string, Response | undefined> = {};
 
-serve(async (request) => {
+export const handler = async (request: Request) => {
   // index.htmlのレスポンス
   const url = new URL(request.url);
   if (url.pathname === "/") {
@@ -50,7 +51,7 @@ serve(async (request) => {
   }
 
   // 静的ファイルを配信
-  // キャッシュ
+  // キャッシュする
   if (cache[request.url]) {
     return cache[request.url]!.clone();
   }
@@ -59,4 +60,8 @@ serve(async (request) => {
     cache[request.url] = response.clone();
   }
   return response;
-});
+};
+
+if (import.meta.main) {
+  serve(handler);
+}
