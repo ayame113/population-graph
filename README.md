@@ -84,6 +84,7 @@ CIでは`deno task check` / `deno task test:coverage` / `deno task test:fmt` /
   - この問題を回避するため、`<link rel="preload">`タグを使用してページの読み込み完了までの時間を短縮しました。
 - Service Workerの使用
   - Service Workerを使用したキャッシュ制御を行っています。
+  - キャッシュからレスポンスを返しつつ、その直後にネットワークからデータを取得してキャッシュを更新します（Stale-While-Revalidate）。
   - ![image](./docs/service_worker.gif)
   - このキャッシュ制御によって、
     - 初回読み込み時（サーバーからレスポンス）：500ミリ秒程度
