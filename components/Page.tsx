@@ -79,7 +79,7 @@ export function Page() {
         <meta name="twitter:site" content="@_ayame113_" />
         <link rel="icon" type="image/png" href={FAVICON_URL} />
         <link rel="apple-touch-icon" href={FAVICON_URL} />
-        <link rel="manifest" href="/manifest.json" />
+        <link rel="manifest" href={`/manifest.json?__h=${DEPLOYMENT_ID}`} />
         <script
           type="module"
           dangerouslySetInnerHTML={{ __html: serviceWorkerScript }}
