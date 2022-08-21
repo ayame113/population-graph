@@ -20,9 +20,35 @@ type PopulationRecord = Record<number, {
 }>;
 
 /** 都道府県データ */
-const prefectures: Prefectures = await (await fetch("/api/prefectures")).json();
+const prefectures = await getPrefectureAPI();
 
 export function PopulationGraph() {
+  const [
+    /** 人口データ */
+    populations,
+    /** 都道府県の選択を切り替えたときに呼ばれる関数 */
+    togglePrefecture,
+  ] = usePopulationAPI(prefectures);
+
+  return (
+    <>
+      <SelectBox
+        prefectures={prefectures}
+        togglePrefecture={togglePrefecture}
+      />
+      <Graph
+        data={Object.values(populations.data)
+          .filter((d) => d.value && d.selected) as GraphProps["data"]}
+      />
+    </>
+  );
+}
+
+/**
+ * 人口APIを使用するためのカスタムフック
+ * @param prefectures 都道府県データ
+ */
+function usePopulationAPI(prefectures: Prefectures) {
   const [populations, setPopulations] = useState<{ data: PopulationRecord }>({
     data: Object.fromEntries(
       prefectures.map(({ prefCode, prefName }) => [prefCode, {
@@ -70,18 +96,7 @@ export function PopulationGraph() {
     setPopulations({ data });
   }, []);
 
-  return (
-    <>
-      <SelectBox
-        prefectures={prefectures}
-        togglePrefecture={togglePrefecture}
-      />
-      <Graph
-        data={Object.values(populations.data)
-          .filter((d) => d.value && d.selected) as GraphProps["data"]}
-      />
-    </>
-  );
+  return [populations, togglePrefecture] as const;
 }
 
 /**
@@ -98,4 +113,9 @@ async function getPopulationAPI(
   }
   const data: Population = await res.json();
   return Object.fromEntries(data.map((d) => [d.year, d.value]));
+}
+
+/** APIから都道府県データを取得します。 */
+async function getPrefectureAPI(): Promise<Prefectures> {
+  return await (await fetch("/api/prefectures")).json();
 }
