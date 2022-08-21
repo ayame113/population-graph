@@ -59,3 +59,12 @@ https://note.yumemi.co.jp/n/ned7429b59556
 - [x] 適切にテストが記述できているか
 - [x] 全て成功するテストが記述できているか[![ci](https://github.com/ayame113/population-graph/actions/workflows/ci.yml/badge.svg)](https://github.com/ayame113/population-graph/actions/workflows/ci.yml)
 - [x] CI を構築しているか
+
+## やり残したこと
+
+- CSSフレームワークの使用
+- wasm使用ライブラリの高速化
+  - ts_serveの中で使用しているwasmの読み込みを高速化して、よりパフォーマンスを向上できるはず。
+- 103 Early Hints の使用
+  - `<link rel="preload">`の代わりに使用することで更に読み込みを高速化できるはず。
+  - Denoが非対応なので対応待ち。

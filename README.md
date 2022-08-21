@@ -65,7 +65,7 @@ CIでは`deno task check` / `deno task test:coverage` / `deno task test:fmt` /
 
 - `git push`すると自動で本番環境に変更が反映されるようになっています。
 - `git push`してから変更が本番環境に反映されるまで、5秒程度で済みます。
-- これを実現するために、Reactのビルドをサーバー上で行うライブラリをOSSとして公開し、使用しています。
+- この速度を実現するために、ReactやTypeScript、JSXのビルドをサーバー上で行うライブラリをOSSとして公開し、使用しています。
   - [ts-serve](https://github.com/ayame113/ts-serve)
   - このライブラリはサーバーとビルドツールが組み合わさったもので、サーバーにリクエストが届くと自動でビルドが走るようになっています。
   - 内部的にはswcを使用しています。
