@@ -44,6 +44,12 @@ Deno.test(async function renderPopulationGraph() {
     "fetch",
     () => Promise.resolve(Response.json([{ year: 1000, value: 20 }])),
   );
+  const mediaQueryList = new EventTarget() as MediaQueryList;
+  const matchMediaStub = stub(
+    globalThis,
+    "matchMedia",
+    () => mediaQueryList,
+  );
   try {
     act(() => {
       createRoot(document.querySelector("#root")!).render(<PopulationGraph />);
@@ -51,8 +57,9 @@ Deno.test(async function renderPopulationGraph() {
 
     const calls = createElementStub.calls as unknown as {
       1: { args: [typeof SelectBox, SelectBoxProps] };
-      8: { args: [typeof Line, unknown] };
-      13: { args: [typeof Line, unknown] };
+      8: { args: [typeof Line, Parameters<typeof Line>[0]] };
+      13: { args: [typeof Line, Parameters<typeof Line>[0]] };
+      15: { args: [typeof Line, Parameters<typeof Line>[0]] };
     };
 
     // 初期表示の際にレンダリングされるデータを確認
@@ -75,15 +82,20 @@ Deno.test(async function renderPopulationGraph() {
         data: { datasets: [], labels: [] },
         height: "400",
         options: {
+          color: "black",
           maintainAspectRatio: false,
           plugins: {
-            title: { display: true, text: "都道府県別の人口" },
+            title: { color: "black", display: true, text: "都道府県別の人口" },
           },
           scales: {
-            xAxes: { title: { display: true, text: "year" } },
+            xAxes: {
+              ticks: { color: "black" },
+              title: { color: "black", display: true, text: "year" },
+            },
             yAxes: {
               beginAtZero: true,
-              title: { display: true, text: "population" },
+              ticks: { color: "black" },
+              title: { color: "black", display: true, text: "population" },
             },
           },
         },
@@ -102,8 +114,8 @@ Deno.test(async function renderPopulationGraph() {
         data: {
           datasets: [
             {
-              backgroundColor: "hsl(42, 120%, 40%)",
-              borderColor: "hsl(42, 120%, 40%)",
+              backgroundColor: "hsl(42, 100%, 40%)",
+              borderColor: "hsl(42, 100%, 40%)",
               data: [20],
               label: "○○県",
             },
@@ -112,20 +124,42 @@ Deno.test(async function renderPopulationGraph() {
         },
         height: "400",
         options: {
+          color: "black",
           maintainAspectRatio: false,
-          plugins: { title: { display: true, text: "都道府県別の人口" } },
+          plugins: {
+            title: { color: "black", display: true, text: "都道府県別の人口" },
+          },
           scales: {
-            xAxes: { title: { display: true, text: "year" } },
+            xAxes: {
+              ticks: { color: "black" },
+              title: { color: "black", display: true, text: "year" },
+            },
             yAxes: {
               beginAtZero: true,
-              title: { display: true, text: "population" },
+              ticks: { color: "black" },
+              title: { color: "black", display: true, text: "population" },
             },
           },
         },
       });
     }
+    // ダークモードに変更した時に表示が切り替わるか確認
+    act(() => {
+      mediaQueryList.dispatchEvent(
+        new class extends Event {
+          matches = true;
+        }("change"),
+      );
+    });
+    await delay(1000);
+    {
+      const { args } = calls[15];
+      assertEquals(args[0], Line);
+      assertEquals(args[1].options!.color, "white");
+    }
   } finally {
     createElementStub.restore();
     fetchStub.restore();
+    matchMediaStub.restore();
   }
 });

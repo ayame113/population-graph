@@ -2,7 +2,7 @@
 
 /** @jsxFrag React.Fragment */
 /** @jsx React.createElement */
-import React, { Line } from "./deps.ts";
+import React, { Line, useEffect, useState } from "./deps.ts";
 
 type LineProps = Parameters<typeof Line>[0];
 
@@ -16,6 +16,20 @@ export interface GraphProps {
 
 /** グラフ表示コンポーネント */
 export function Graph(props: GraphProps) {
+  // ダークモード対応
+  const [isDarkMode, setIsDarkMode] = useState(
+    globalThis.matchMedia("(prefers-color-scheme: dark)").matches,
+  );
+  useEffect(() => {
+    const mediaQuery = globalThis.matchMedia("(prefers-color-scheme: dark)");
+    const onModeCange = (event: MediaQueryListEvent) =>
+      setIsDarkMode(event.matches);
+    mediaQuery.addEventListener("change", onModeCange);
+    return () => {
+      mediaQuery.removeEventListener("change", onModeCange);
+    };
+  });
+
   /** x軸のラベル（year） */
   const labelSet = new Set<string>();
   for (const { value } of props.data) {
@@ -30,25 +44,30 @@ export function Graph(props: GraphProps) {
     return {
       label: prefName,
       data: labels.map((year) => value[+year]),
-      borderColor: colorFromString(prefName),
-      backgroundColor: colorFromString(prefName),
+      borderColor: colorFromString(prefName, isDarkMode),
+      backgroundColor: colorFromString(prefName, isDarkMode),
     };
   });
 
+  const color = isDarkMode ? "white" : "black";
   const options: LineProps["options"] = {
+    color,
     maintainAspectRatio: false,
     plugins: {
       title: {
         display: true,
         text: "都道府県別の人口",
+        color,
       },
     },
     scales: {
       xAxes: {
-        title: { display: true, text: "year" },
+        title: { display: true, text: "year", color },
+        ticks: { color },
       },
       yAxes: {
-        title: { display: true, text: "population" },
+        title: { display: true, text: "population", color },
+        ticks: { color },
         beginAtZero: true,
       },
     },
@@ -66,22 +85,19 @@ export function Graph(props: GraphProps) {
   );
 }
 
-const colorCache: Record<string, string | undefined> = {};
+const colorCache: Record<string, number> = {};
 const encoder = new TextEncoder();
 /** 文字列を元にcss colorを作成して返します。 */
-function colorFromString(str: string) {
-  // 関数メモ化
-  if (colorCache[str]) {
-    return colorCache[str];
-  }
-
-  let n = 1;
-  for (const [i, byte] of encoder.encode(str).entries()) {
-    n *= byte * 524287 + i * 8191;
-    n %= 131071;
-  }
-
+function colorFromString(str: string, isDarkMode: boolean) {
   // 同じ文字列を渡した場合は同じ色が返るのでキャッシュできる
-  colorCache[str] = `hsl(${n % 360}, 120%, 40%)`;
-  return colorCache[str];
+  colorCache[str] ??= (() => {
+    let n = 1;
+    for (const [i, byte] of encoder.encode(str).entries()) {
+      n *= byte * 524287 + i * 8191;
+      n %= 131071;
+    }
+    return n;
+  })();
+
+  return `hsl(${colorCache[str] % 360}, 100%, ${isDarkMode ? "70%" : "40%"})`;
 }
