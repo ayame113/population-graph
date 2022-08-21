@@ -44,14 +44,11 @@ Deno.test(async function renderPopulationGraph() {
     "fetch",
     () => Promise.resolve(Response.json([{ year: 1000, value: 20 }])),
   );
+  const mediaQueryList = new EventTarget() as MediaQueryList;
   const matchMediaStub = stub(
     globalThis,
     "matchMedia",
-    () => {
-      const m = new EventTarget() as MediaQueryList;
-      // m.matches = false;
-      return m;
-    },
+    () => mediaQueryList,
   );
   try {
     act(() => {
@@ -60,8 +57,9 @@ Deno.test(async function renderPopulationGraph() {
 
     const calls = createElementStub.calls as unknown as {
       1: { args: [typeof SelectBox, SelectBoxProps] };
-      8: { args: [typeof Line, unknown] };
-      13: { args: [typeof Line, unknown] };
+      8: { args: [typeof Line, Parameters<typeof Line>[0]] };
+      13: { args: [typeof Line, Parameters<typeof Line>[0]] };
+      15: { args: [typeof Line, Parameters<typeof Line>[0]] };
     };
 
     // 初期表示の際にレンダリングされるデータを確認
@@ -144,6 +142,20 @@ Deno.test(async function renderPopulationGraph() {
           },
         },
       });
+    }
+    // ダークモードに変更した時に表示が切り替わるか確認
+    act(() => {
+      mediaQueryList.dispatchEvent(
+        new class extends Event {
+          matches = true;
+        }("change"),
+      );
+    });
+    await delay(1000);
+    {
+      const { args } = calls[15];
+      assertEquals(args[0], Line);
+      assertEquals(args[1].options!.color, "white");
     }
   } finally {
     createElementStub.restore();
