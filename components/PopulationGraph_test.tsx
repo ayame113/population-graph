@@ -107,8 +107,8 @@ Deno.test(async function renderPopulationGraph() {
         data: {
           datasets: [
             {
-              backgroundColor: "hsl(42, 120%, 40%)",
-              borderColor: "hsl(42, 120%, 40%)",
+              backgroundColor: "hsl(42, 100%, 40%)",
+              borderColor: "hsl(42, 100%, 40%)",
               data: [20],
               label: "○○県",
             },
