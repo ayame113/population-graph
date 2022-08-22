@@ -84,7 +84,8 @@ CIでは`deno task check` / `deno task test:coverage` / `deno task test:fmt` /
   - この問題を回避するため、`<link rel="preload">`タグを使用してページの読み込み完了までの時間を短縮しました。
 - Service Workerの使用
   - Service Workerを使用したキャッシュ制御を行っています。
-  - キャッシュからレスポンスを返しつつ、その直後にネットワークからデータを取得してキャッシュを更新します（Stale-While-Revalidate）。
+  - Service
+    Workerのキャッシュからレスポンスを返しつつ、その直後にネットワークからデータを取得してキャッシュを更新します（Stale-While-Revalidate）。
   - ![image](./docs/service_worker.gif)
   - このキャッシュ制御によって、
     - 初回読み込み時（サーバーからレスポンス）：500ミリ秒程度
@@ -116,5 +117,13 @@ CIでは`deno task check` / `deno task test:coverage` / `deno task test:fmt` /
 - このWebサイトを製作する中で得た知見について、Qiitaに記事を投稿しました。
   - [deno deployで「ReferenceError: h is not defined」が出たときの対処法](https://qiita.com/access3151fq/items/d6026e656844abfae922)
   - [Deno の test で fetch を stub する](https://qiita.com/access3151fq/items/5f8a21d5f933ba475808)
+
+### 苦労した点・反省点
+
+- Denoを用いてReactのテストを行う方法が確立されていないため、手探りで実装しました。
+  - Deno版jsdomであるdeno_domを使用したが、クリックイベントの反映が起こらないなど、細かい箇所で実装に苦慮しました。
+- フロントエンドからAPIを呼ぶ個所で、既存の状態管理ライブラリを使用することを検討したものの、時間的な問題もありライブラリを使わずに実装しました。
+- CSS in JSなど、CSSライブラリの導入を検討しましたが、今回は小規模なページという事もあり、慣れているPure
+  CSSで実装しました。時間があれば複数を使用した上で、比較して選定したかったです。
 
 チェックリスト：[./docs/check_list.md](./docs/check_list.md)（参考）
