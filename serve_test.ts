@@ -60,6 +60,20 @@ Deno.test({
 });
 
 Deno.test({
+  name: "server - worker file",
+  async fn() {
+    const res = await handler(
+      new Request("https://favi.deno.dev/service_worker.js"),
+    );
+    assertEquals(
+      res.headers.get("Content-Type"),
+      "application/javascript; charset=UTF-8",
+    );
+    assert((await res.text()).includes(`addEventListener("fetch"`));
+  },
+});
+
+Deno.test({
   name: "server - static file",
   async fn() {
     const res = await handler(
