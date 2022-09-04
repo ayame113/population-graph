@@ -2,7 +2,7 @@ import { assertEquals } from "https://deno.land/std@0.152.0/testing/asserts.ts";
 import { stub } from "https://deno.land/std@0.152.0/testing/mock.ts";
 import { delay } from "https://deno.land/std@0.152.0/async/delay.ts";
 import { DOMParser } from "https://deno.land/x/deno_dom@v0.1.33-alpha/deno-dom-wasm.ts";
-import { act } from "https://esm.sh/react-dom@18.2.0/test-utils?target=es2020&dev";
+import { act } from "https://esm.sh/react-dom@18.2.0/test-utils?target=es2020&dev&pin=v91";
 
 /** @jsxFrag React.Fragment */
 /** @jsx React.createElement */

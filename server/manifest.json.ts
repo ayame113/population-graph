@@ -1,4 +1,4 @@
-import { DESCRIPTION, FAVICON_URL, THEME_COLOR, TITLE } from "../metadata.ts";
+import { DESCRIPTION, FAVICON_URL, THEME_COLOR, TITLE } from "./metadata.ts";
 
 /** 都道府県APIの設定 */
 export const manifestJson = {

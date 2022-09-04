@@ -4,6 +4,8 @@ import {
   Status,
   STATUS_TEXT,
 } from "https://deno.land/std@0.152.0/http/mod.ts";
+import { serveFile } from "https://deno.land/std@0.152.0/http/file_server.ts";
+import { fromFileUrl } from "https://deno.land/std@0.152.0/path/mod.ts";
 import { contentType } from "https://deno.land/std@0.152.0/media_types/mod.ts";
 import {
   fourceInstantiateWasm,
@@ -23,6 +25,9 @@ const response404 = new Response(STATUS_TEXT[Status.NotFound], {
 
 const html = renderToString();
 const htmlContentType = contentType("html");
+const workerPath = fromFileUrl(
+  import.meta.resolve("./worker/service_worker.js"),
+);
 
 init();
 
@@ -39,6 +44,10 @@ export const handler = async (request: Request) => {
 
   if (url.pathname === "/twitter_card.png") {
     return await fetch("https://favi.deno.dev/📈.png");
+  }
+
+  if (url.pathname === "/service_worker.js") {
+    return serveFile(request, workerPath);
   }
 
   // APIへのリクエストを受信
