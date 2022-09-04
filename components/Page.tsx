@@ -9,7 +9,7 @@ import {
   THEME_COLOR,
   TITLE,
   TOP_PAGE,
-} from "../metadata.ts";
+} from "../server/metadata.ts";
 
 import { Header } from "./Header.tsx";
 import { Main } from "./Main.tsx";
@@ -17,7 +17,7 @@ import { Footer } from "./Footer.tsx";
 
 const preload = [
   { as: "fetch", href: "/api/prefectures" },
-  { as: "script", href: "/components/main.ts" },
+  { as: "script", href: "/components/render.ts" },
   { as: "script", href: "/components/PopulationGraph.tsx" },
   { as: "script", href: "/components/Graph.tsx" },
   { as: "script", href: "/components/SelectBox.tsx" },
@@ -55,7 +55,7 @@ export function Page() {
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>{TITLE}</title>
-        <script type="module" src="/components/main.ts"></script>
+        <script type="module" src="/components/render.ts"></script>
         {preload.map(({ as, href }) => (
           <link
             rel="preload"
