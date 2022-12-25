@@ -1,4 +1,4 @@
-import ReactDOMServer from "https://esm.sh/react-dom@18.2.0/server";
+import ReactDOMServer from "https://esm.sh/react-dom@18.3.0-next-fecc288b7-20221025/server";
 /** @jsxFrag React.Fragment */
 /** @jsx React.createElement */
 import React from "./server_deps.ts";
