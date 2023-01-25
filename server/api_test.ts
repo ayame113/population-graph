@@ -2,12 +2,12 @@ import {
   assert,
   assertEquals,
   assertRejects,
-} from "https://deno.land/std@0.152.0/testing/asserts.ts";
+} from "https://deno.land/std@0.173.0/testing/asserts.ts";
 import {
   assertSpyCallArg,
   assertSpyCalls,
   stub,
-} from "https://deno.land/std@0.152.0/testing/mock.ts";
+} from "https://deno.land/std@0.173.0/testing/mock.ts";
 
 import { init, populationApi, prefecturesApi } from "./api.ts";
 

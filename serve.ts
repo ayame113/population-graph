@@ -1,16 +1,16 @@
-import "https://deno.land/std@0.152.0/dotenv/load.ts";
+import "https://deno.land/std@0.173.0/dotenv/load.ts";
 import {
   serve,
   Status,
   STATUS_TEXT,
-} from "https://deno.land/std@0.152.0/http/mod.ts";
-import { serveFile } from "https://deno.land/std@0.152.0/http/file_server.ts";
-import { fromFileUrl } from "https://deno.land/std@0.152.0/path/mod.ts";
-import { contentType } from "https://deno.land/std@0.152.0/media_types/mod.ts";
+} from "https://deno.land/std@0.173.0/http/mod.ts";
+import { serveFile } from "https://deno.land/std@0.173.0/http/file_server.ts";
+import { fromFileUrl } from "https://deno.land/std@0.173.0/path/mod.ts";
+import { contentType } from "https://deno.land/std@0.173.0/media_types/mod.ts";
 import {
   fourceInstantiateWasm,
   serveDirWithTs,
-} from "https://deno.land/x/ts_serve@v1.4.0/mod.ts";
+} from "https://deno.land/x/ts_serve@v1.4.2/mod.ts";
 
 import type { Routing } from "./server/types.ts";
 import { init, populationApi, prefecturesApi } from "./server/api.ts";
