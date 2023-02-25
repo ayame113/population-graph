@@ -1,12 +1,12 @@
 import {
   assert,
   assertEquals,
-} from "https://deno.land/std@0.152.0/testing/asserts.ts";
+} from "https://deno.land/std@0.178.0/testing/asserts.ts";
 import {
   assertSpyCallArg,
   assertSpyCalls,
   stub,
-} from "https://deno.land/std@0.152.0/testing/mock.ts";
+} from "https://deno.land/std@0.178.0/testing/mock.ts";
 
 import { handler } from "./serve.ts";
 
